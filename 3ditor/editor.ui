@@ -70,104 +70,95 @@
         <property name="title">
          <string>Models</string>
         </property>
-        <widget class="QLineEdit" name="lineEditModelDirectory">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>40</y>
-           <width>151</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
-         </property>
-        </widget>
-        <widget class="QLabel" name="labelModelDirectory">
-         <property name="geometry">
-          <rect>
-           <x>6</x>
-           <y>16</y>
-           <width>61</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Directory:</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="browseButton">
-         <property name="geometry">
-          <rect>
-           <x>164</x>
-           <y>42</y>
-           <width>51</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Browse</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line">
-         <property name="geometry">
-          <rect>
-           <x>-3</x>
-           <y>69</y>
-           <width>231</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QListWidget" name="listWidget">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>90</y>
-           <width>201</width>
-           <height>521</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="Line" name="line_2">
-         <property name="geometry">
-          <rect>
-           <x>-3</x>
-           <y>620</y>
-           <width>231</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label">
-         <property name="geometry">
-          <rect>
-           <x>6</x>
-           <y>640</y>
-           <width>61</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Preview:</string>
-         </property>
-        </widget>
-        <widget class="Preview" name="openGLWidget">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>660</y>
-           <width>201</width>
-           <height>201</height>
-          </rect>
-         </property>
-        </widget>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="1" column="0" colspan="2">
+          <widget class="QLineEdit" name="lineEditModelDirectory">
+           <property name="focusPolicy">
+            <enum>Qt::ClickFocus</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="browseButton">
+           <property name="text">
+            <string>Browse</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelModelDirectory">
+           <property name="text">
+            <string>Directory:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Preview:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1" colspan="2">
+          <widget class="QCheckBox" name="checkBoxAutorotate">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Autorotate</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="3">
+          <widget class="Preview" name="openGLWidget">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>201</width>
+             <height>201</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>201</width>
+             <height>201</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="3">
+          <widget class="Line" name="line_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="3">
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="3">
+          <widget class="QListWidget" name="listWidget">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>

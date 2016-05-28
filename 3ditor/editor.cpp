@@ -51,7 +51,7 @@ void Editor::on_browseButton_clicked()
 	if (!baseDirectory.isNull())
 	{
 		// delete old models
-		ui.openGLWidget->previewModel = nullptr;
+		ui.openGLWidget->setModel(nullptr);
 
 		while (models.size() > 0)
 		{
@@ -66,8 +66,8 @@ void Editor::on_browseButton_clicked()
 		ui.listWidget->clear();
 		QDirIterator it(baseDirectory, QDir::Files, QDirIterator::Subdirectories);
 
-		ui.openGLWidget->bindShader();
 		ui.openGLWidget->makeCurrent();
+		ui.openGLWidget->bindShader();
 		while (it.hasNext()) {
 			QString absolutefilePath = it.next();
 			QString relativeFilePath = absolutefilePath.replace(0, baseDirectory.length(), "");
@@ -90,13 +90,18 @@ void Editor::on_browseButton_clicked()
 	}	
 }
 
+void Editor::on_checkBoxAutorotate_stateChanged(int state)
+{
+	ui.openGLWidget->setAutoRotation(state);
+}
+
 void Editor::on_listWidget_currentTextChanged(const QString& currentText)
 {
 	for (Model* m : models)
 	{
 		if (m->filepath.endsWith(currentText, Qt::CaseInsensitive))
 		{
-			ui.openGLWidget->previewModel = m;
+			ui.openGLWidget->setModel(m);
 			break;
 		}
 	}

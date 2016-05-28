@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
@@ -45,14 +46,16 @@ public:
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
     QGroupBox *groupBox;
+    QGridLayout *gridLayout_2;
     QLineEdit *lineEditModelDirectory;
-    QLabel *labelModelDirectory;
     QPushButton *browseButton;
+    QLabel *labelModelDirectory;
+    QLabel *label;
+    QCheckBox *checkBoxAutorotate;
+    Preview *openGLWidget;
+    QFrame *line_2;
     QFrame *line;
     QListWidget *listWidget;
-    QFrame *line_2;
-    QLabel *label;
-    Preview *openGLWidget;
     Scene *openGLWidget_2;
     QGroupBox *groupBox_2;
     QMenuBar *menuBar;
@@ -108,35 +111,74 @@ public:
         groupBox->setSizePolicy(sizePolicy1);
         groupBox->setMinimumSize(QSize(221, 0));
         groupBox->setMaximumSize(QSize(221, 16777215));
+        gridLayout_2 = new QGridLayout(groupBox);
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setContentsMargins(11, 11, 11, 11);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         lineEditModelDirectory = new QLineEdit(groupBox);
         lineEditModelDirectory->setObjectName(QStringLiteral("lineEditModelDirectory"));
-        lineEditModelDirectory->setGeometry(QRect(10, 40, 151, 21));
         lineEditModelDirectory->setFocusPolicy(Qt::ClickFocus);
-        labelModelDirectory = new QLabel(groupBox);
-        labelModelDirectory->setObjectName(QStringLiteral("labelModelDirectory"));
-        labelModelDirectory->setGeometry(QRect(6, 16, 61, 20));
+
+        gridLayout_2->addWidget(lineEditModelDirectory, 1, 0, 1, 2);
+
         browseButton = new QPushButton(groupBox);
         browseButton->setObjectName(QStringLiteral("browseButton"));
-        browseButton->setGeometry(QRect(164, 42, 51, 21));
-        line = new QFrame(groupBox);
-        line->setObjectName(QStringLiteral("line"));
-        line->setGeometry(QRect(-3, 69, 231, 16));
-        line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
-        listWidget = new QListWidget(groupBox);
-        listWidget->setObjectName(QStringLiteral("listWidget"));
-        listWidget->setGeometry(QRect(10, 90, 201, 521));
-        line_2 = new QFrame(groupBox);
-        line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setGeometry(QRect(-3, 620, 231, 21));
-        line_2->setFrameShape(QFrame::HLine);
-        line_2->setFrameShadow(QFrame::Sunken);
+
+        gridLayout_2->addWidget(browseButton, 1, 2, 1, 1);
+
+        labelModelDirectory = new QLabel(groupBox);
+        labelModelDirectory->setObjectName(QStringLiteral("labelModelDirectory"));
+
+        gridLayout_2->addWidget(labelModelDirectory, 0, 0, 1, 1);
+
         label = new QLabel(groupBox);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(6, 640, 61, 20));
+
+        gridLayout_2->addWidget(label, 5, 0, 1, 1);
+
+        checkBoxAutorotate = new QCheckBox(groupBox);
+        checkBoxAutorotate->setObjectName(QStringLiteral("checkBoxAutorotate"));
+        checkBoxAutorotate->setLayoutDirection(Qt::LeftToRight);
+        checkBoxAutorotate->setChecked(true);
+
+        gridLayout_2->addWidget(checkBoxAutorotate, 5, 1, 1, 2);
+
         openGLWidget = new Preview(groupBox);
         openGLWidget->setObjectName(QStringLiteral("openGLWidget"));
-        openGLWidget->setGeometry(QRect(10, 660, 201, 201));
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(openGLWidget->sizePolicy().hasHeightForWidth());
+        openGLWidget->setSizePolicy(sizePolicy2);
+        openGLWidget->setMinimumSize(QSize(201, 201));
+        openGLWidget->setMaximumSize(QSize(201, 201));
+
+        gridLayout_2->addWidget(openGLWidget, 6, 0, 1, 3);
+
+        line_2 = new QFrame(groupBox);
+        line_2->setObjectName(QStringLiteral("line_2"));
+        line_2->setFrameShape(QFrame::HLine);
+        line_2->setFrameShadow(QFrame::Sunken);
+
+        gridLayout_2->addWidget(line_2, 4, 0, 1, 3);
+
+        line = new QFrame(groupBox);
+        line->setObjectName(QStringLiteral("line"));
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
+
+        gridLayout_2->addWidget(line, 2, 0, 1, 3);
+
+        listWidget = new QListWidget(groupBox);
+        listWidget->setObjectName(QStringLiteral("listWidget"));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
+        listWidget->setSizePolicy(sizePolicy3);
+
+        gridLayout_2->addWidget(listWidget, 3, 0, 1, 3);
+
 
         horizontalLayout->addWidget(groupBox);
 
@@ -198,9 +240,10 @@ public:
         actionSave_as->setText(QApplication::translate("EditorClass", "Save as...", 0));
         actionJSON->setText(QApplication::translate("EditorClass", "JSON", 0));
         groupBox->setTitle(QApplication::translate("EditorClass", "Models", 0));
-        labelModelDirectory->setText(QApplication::translate("EditorClass", "Directory:", 0));
         browseButton->setText(QApplication::translate("EditorClass", "Browse", 0));
+        labelModelDirectory->setText(QApplication::translate("EditorClass", "Directory:", 0));
         label->setText(QApplication::translate("EditorClass", "Preview:", 0));
+        checkBoxAutorotate->setText(QApplication::translate("EditorClass", "Autorotate", 0));
         groupBox_2->setTitle(QApplication::translate("EditorClass", "GroupBox", 0));
         menuFile->setTitle(QApplication::translate("EditorClass", "File", 0));
         menuExport->setTitle(QApplication::translate("EditorClass", "Export", 0));

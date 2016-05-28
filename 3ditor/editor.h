@@ -22,6 +22,7 @@ private slots:
 	void on_actionQuit_triggered();
 
 	void on_browseButton_clicked();
+	void on_checkBoxAutorotate_stateChanged(int state);
 	void on_listWidget_currentTextChanged(const QString& currentText);
 
 private:

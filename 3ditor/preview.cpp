@@ -36,7 +36,7 @@ Preview::Preview(QWidget* parent) : QOpenGLWidget(parent)
 
 Preview::~Preview()
 {
-	// actually destroy our OpenGL information
+	// destroy our shader object
 	delete m_program;
 }
 
@@ -49,11 +49,18 @@ void Preview::initializeGL()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 
-	// create Shader (Do not release until VAO is created)
+	// create shader object
 	m_program = new QOpenGLShaderProgram(this);
 	m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
 	m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
 	m_program->link();
+
+	// setup matrices
+	m_projection.setToIdentity();
+	m_projection.perspective(fov, float(width()) / float(height()), 0.01f, 1000.0f);
+
+	m_view.setToIdentity();
+	m_view.lookAt(QVector3D(0.0f, 2.0f, -2.0f), QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f));
 }
 
 void Preview::resizeGL(int w, int h)
@@ -69,29 +76,13 @@ void Preview::paintGL()
 
 	if (previewModel)
 	{
-		// setup matrices
-		QMatrix4x4 projection;
-		projection.setToIdentity();
-		projection.perspective(60.0f, float(width()) / float(height()), 0.01f, 1000.0f);
-
-		QMatrix4x4 view;
-		view.setToIdentity();
-		view.lookAt(QVector3D(0.0f, 2.0f, -2.0f), QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f, 1.0f, 0.0f));
-
-		QMatrix4x4 model;
-		model.setToIdentity();
-		model.rotate(45.0f, QVector3D(0.0f, 1.0f, 0.0f));
-		model.scale(previewModel->getNormalisingValue());
-
 		// animate model
-		rotate += 4.0f * 0.016f;
-		if (rotate > 360.0f)
-			rotate -= 360.0f;
-		model.rotate(rotate, QVector3D(0.0f, 1.0f, 0.0f));
+		if (autoRotation)
+			m_model.rotate(8.0f * 0.016f, QVector3D(0.0f, 1.0f, 0.0f));
 
 		// render using our shader
 		m_program->bind();
-		m_program->setUniformValue(m_program->uniformLocation("matrix"), projection * view * model);
+		m_program->setUniformValue(m_program->uniformLocation("matrix"), m_projection * m_view * m_model);
 		{
 			previewModel->draw();
 		}
@@ -99,7 +90,32 @@ void Preview::paintGL()
 	}
 }
 
-void Preview::animate()
+void Preview::wheelEvent(QWheelEvent* event)
 {
-	update();
+	// calculate new fov for zoom in/out
+	fov -= event->angleDelta().y()  * 0.016f;
+
+	// recalculate projection matrix
+	m_projection.setToIdentity();
+	m_projection.perspective(fov, float(width()) / float(height()), 0.01f, 1000.0f);
+}
+
+void Preview::setModel(Model* model)
+{
+	// store model
+	previewModel = model;
+
+	// if model is valid
+	if (model)
+	{
+		// setup model matrix
+		m_model.setToIdentity();
+		m_model.rotate(45.0f, QVector3D(0.0f, 1.0f, 0.0f));
+		m_model.scale(previewModel->getNormalisingValue());
+	}
+}
+
+void Preview::setAutoRotation(bool autoRotation)
+{
+	this->autoRotation = autoRotation;
 }
