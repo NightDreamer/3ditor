@@ -24,17 +24,10 @@ void Scene::initializeGL()
 	glViewport(0.0f, 0.0f, float(width()) * devicePixelRatio(), float(height()) * devicePixelRatio());
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
-
-	// create Shader (Do not release until VAO is created)
-	/*m_program = new QOpenGLShaderProgram(this);
-	m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
-	m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
-	m_program->link();*/
 }
 
 void Scene::resizeGL(int w, int h)
 {
-	this->setFixedSize(w, h);
 	const qreal retinaScale = devicePixelRatio();
 	glViewport(0.0f, 0.0f, float(width()) * retinaScale, float(height()) * retinaScale);
 }

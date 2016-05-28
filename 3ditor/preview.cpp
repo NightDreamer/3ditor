@@ -58,7 +58,6 @@ void Preview::initializeGL()
 
 void Preview::resizeGL(int w, int h)
 {
-	this->setFixedSize(w, h);
 	const qreal retinaScale = devicePixelRatio();
 	glViewport(0.0f, 0.0f, float(width()) * retinaScale, float(height()) * retinaScale);
 }

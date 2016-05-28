@@ -14,7 +14,9 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -26,6 +28,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 #include "preview.h"
+#include "scene.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -39,6 +42,8 @@ public:
     QAction *actionSave_as;
     QAction *actionJSON;
     QWidget *centralWidget;
+    QGridLayout *gridLayout;
+    QHBoxLayout *horizontalLayout;
     QGroupBox *groupBox;
     QLineEdit *lineEditModelDirectory;
     QLabel *labelModelDirectory;
@@ -48,6 +53,8 @@ public:
     QFrame *line_2;
     QLabel *label;
     Preview *openGLWidget;
+    Scene *openGLWidget_2;
+    QGroupBox *groupBox_2;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuExport;
@@ -57,7 +64,13 @@ public:
     {
         if (EditorClass->objectName().isEmpty())
             EditorClass->setObjectName(QStringLiteral("EditorClass"));
-        EditorClass->resize(1517, 915);
+        EditorClass->resize(1515, 926);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(EditorClass->sizePolicy().hasHeightForWidth());
+        EditorClass->setSizePolicy(sizePolicy);
+        EditorClass->setMinimumSize(QSize(1280, 720));
         EditorClass->setTabShape(QTabWidget::Triangular);
         actionNew = new QAction(EditorClass);
         actionNew->setObjectName(QStringLiteral("actionNew"));
@@ -74,9 +87,27 @@ public:
         actionJSON->setObjectName(QStringLiteral("actionJSON"));
         centralWidget = new QWidget(EditorClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        centralWidget->setEnabled(true);
+        sizePolicy.setHeightForWidth(centralWidget->sizePolicy().hasHeightForWidth());
+        centralWidget->setSizePolicy(sizePolicy);
+        gridLayout = new QGridLayout(centralWidget);
+        gridLayout->setSpacing(6);
+        gridLayout->setContentsMargins(11, 11, 11, 11);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setSizeConstraint(QLayout::SetMaximumSize);
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(9, 0, 221, 871));
+        groupBox->setEnabled(true);
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
+        groupBox->setSizePolicy(sizePolicy1);
+        groupBox->setMinimumSize(QSize(221, 0));
+        groupBox->setMaximumSize(QSize(221, 16777215));
         lineEditModelDirectory = new QLineEdit(groupBox);
         lineEditModelDirectory->setObjectName(QStringLiteral("lineEditModelDirectory"));
         lineEditModelDirectory->setGeometry(QRect(10, 40, 151, 21));
@@ -106,10 +137,32 @@ public:
         openGLWidget = new Preview(groupBox);
         openGLWidget->setObjectName(QStringLiteral("openGLWidget"));
         openGLWidget->setGeometry(QRect(10, 660, 201, 201));
+
+        horizontalLayout->addWidget(groupBox);
+
+        openGLWidget_2 = new Scene(centralWidget);
+        openGLWidget_2->setObjectName(QStringLiteral("openGLWidget_2"));
+        sizePolicy.setHeightForWidth(openGLWidget_2->sizePolicy().hasHeightForWidth());
+        openGLWidget_2->setSizePolicy(sizePolicy);
+
+        horizontalLayout->addWidget(openGLWidget_2);
+
+        groupBox_2 = new QGroupBox(centralWidget);
+        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
+        sizePolicy1.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
+        groupBox_2->setSizePolicy(sizePolicy1);
+        groupBox_2->setMinimumSize(QSize(221, 0));
+        groupBox_2->setMaximumSize(QSize(221, 16777215));
+
+        horizontalLayout->addWidget(groupBox_2);
+
+
+        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+
         EditorClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(EditorClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1517, 21));
+        menuBar->setGeometry(QRect(0, 0, 1515, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuExport = new QMenu(menuBar);
@@ -148,6 +201,7 @@ public:
         labelModelDirectory->setText(QApplication::translate("EditorClass", "Directory:", 0));
         browseButton->setText(QApplication::translate("EditorClass", "Browse", 0));
         label->setText(QApplication::translate("EditorClass", "Preview:", 0));
+        groupBox_2->setTitle(QApplication::translate("EditorClass", "GroupBox", 0));
         menuFile->setTitle(QApplication::translate("EditorClass", "File", 0));
         menuExport->setTitle(QApplication::translate("EditorClass", "Export", 0));
     } // retranslateUi
