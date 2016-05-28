@@ -92,6 +92,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="preview.cpp" />
+    <ClCompile Include="scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="editor.h">
@@ -121,6 +122,7 @@
     <ClInclude Include="GeneratedFiles\ui_editor.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="preview.h" />
+    <ClInclude Include="scene.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="editor.qrc">

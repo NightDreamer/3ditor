@@ -74,6 +74,9 @@
     <ClCompile Include="model.cpp">
       <Filter>Source Dateien\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Dateien\widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="editor.ui">
@@ -95,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Header Dateien\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Header Dateien\widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

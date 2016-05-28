@@ -2,7 +2,7 @@
 #include <QTimer>
 
 static const char* vertexShaderSource =
-"#version 330\n"
+"#version 330 core \n"
 "layout(location = 0) in vec3 position; \n"
 "layout(location = 1) in vec2 uv; \n"
 "uniform mat4 matrix;\n"
@@ -15,7 +15,7 @@ static const char* vertexShaderSource =
 "}\n";
 
 static const char* fragmentShaderSource =
-"#version 330 \n"
+"#version 330 core \n"
 "in vec2 texCoord; \n"
 "out vec4 fColor; \n"
 "uniform sampler2D tex; \n"
@@ -31,7 +31,7 @@ Preview::Preview(QWidget* parent) : QOpenGLWidget(parent)
 
 	QTimer* timer = new QTimer(this);
 	connect(timer, &QTimer::timeout, this, &Preview::animate);
-	timer->start(0);
+	timer->start(16);
 }
 
 Preview::~Preview()
@@ -45,8 +45,7 @@ void Preview::initializeGL()
 	// initialise
 	initializeOpenGLFunctions();
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	const qreal retinaScale = devicePixelRatio();
-	glViewport(0.0f, 0.0f, float(width()) * retinaScale, float(height()) * retinaScale);
+	glViewport(0.0f, 0.0f, float(width()) * devicePixelRatio(), float(height()) * devicePixelRatio());
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 
@@ -55,22 +54,11 @@ void Preview::initializeGL()
 	m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
 	m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
 	m_program->link();
-	m_program->bind();
-
-	// enable attributes
-	m_program->enableAttributeArray(0);
-	m_program->setAttributeBuffer(0, GL_FLOAT, 0 * sizeof(float), 3, 5 * sizeof(float));
-	m_program->enableAttributeArray(1);
-	m_program->setAttributeBuffer(1, GL_FLOAT, 3 * sizeof(float), 2, 5 * sizeof(float));
-
-	// release (unbind) all
-	m_program->release();
 }
 
 void Preview::resizeGL(int w, int h)
 {
 	this->setFixedSize(w, h);
-
 	const qreal retinaScale = devicePixelRatio();
 	glViewport(0.0f, 0.0f, float(width()) * retinaScale, float(height()) * retinaScale);
 }
@@ -114,6 +102,5 @@ void Preview::paintGL()
 
 void Preview::animate()
 {
-	elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 1000;
 	update();
 }
