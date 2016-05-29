@@ -163,8 +163,8 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(openGLWidget->sizePolicy().hasHeightForWidth());
         openGLWidget->setSizePolicy(sizePolicy2);
-        openGLWidget->setMinimumSize(QSize(201, 201));
-        openGLWidget->setMaximumSize(QSize(201, 201));
+        openGLWidget->setMinimumSize(QSize(197, 197));
+        openGLWidget->setMaximumSize(QSize(197, 197));
 
         gridLayout_2->addWidget(openGLWidget, 6, 0, 1, 3);
 
@@ -259,7 +259,7 @@ public:
         label->setText(QApplication::translate("EditorClass", "Preview:", 0));
         tabWidget->setTabText(tabWidget->indexOf(tabWidgetPage1), QApplication::translate("EditorClass", "Model", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("EditorClass", "Creator", 0));
-        groupBox_2->setTitle(QApplication::translate("EditorClass", "GroupBox", 0));
+        groupBox_2->setTitle(QApplication::translate("EditorClass", "Scene", 0));
         menuFile->setTitle(QApplication::translate("EditorClass", "File", 0));
         menuExport->setTitle(QApplication::translate("EditorClass", "Export", 0));
     } // retranslateUi

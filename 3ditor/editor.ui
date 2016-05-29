@@ -136,14 +136,14 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>201</width>
-              <height>201</height>
+              <width>197</width>
+              <height>197</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>201</width>
-              <height>201</height>
+              <width>197</width>
+              <height>197</height>
              </size>
             </property>
            </widget>
@@ -208,7 +208,7 @@
          </size>
         </property>
         <property name="title">
-         <string>GroupBox</string>
+         <string>Scene</string>
         </property>
        </widget>
       </item>

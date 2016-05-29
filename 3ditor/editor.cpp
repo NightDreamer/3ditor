@@ -13,7 +13,11 @@ Editor::Editor(QWidget *parent)	: QMainWindow(parent)
 
 Editor::~Editor()
 {
-
+	while (models.size() > 0)
+	{
+		delete models.back();
+		models.pop_back();
+	}
 }
 
 void Editor::on_actionNew_triggered()
@@ -44,6 +48,10 @@ void Editor::on_actionQuit_triggered()
 
 void Editor::on_browseButton_clicked()
 {
+	// FOR DEBUG PURPOSES ONLY:
+	// check if the QOpenGLWidgets have shared contexts
+	qDebug() << "Shared context between both QOpenGLWidgets: " << QOpenGLContext::areSharing(ui.openGLWidget->context(), ui.openGLWidget_2->context());
+
 	// let the user choose the directory
 	QString baseDirectory = QFileDialog::getExistingDirectory(this, QString("Choose Folder"), QDir::currentPath());
 
