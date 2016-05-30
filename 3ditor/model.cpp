@@ -1,28 +1,18 @@
 #include "model.h"
 #include <QMessageBox>
 
-Mesh::Mesh(QOpenGLShaderProgram* program, QString texturefilepath, GLuint numVertices, const void* data, int count)
+Mesh::Mesh(QString texturefilepath, GLuint numVertices, const void* data, int count)
 {
 	this->numVertices = numVertices;
 
 	tex = new QOpenGLTexture(QImage(texturefilepath).mirrored());
-
-	vao.create();
-	vao.bind();
 
 	vbo = QOpenGLBuffer(QOpenGLBuffer::Type::VertexBuffer);
 	vbo.create();
 	vbo.bind();
 	vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
 	vbo.allocate(data, count);
-
-	program->enableAttributeArray(0);
-	program->setAttributeBuffer(0, GL_FLOAT, 0 * sizeof(float), 3, 5 * sizeof(float));
-	program->enableAttributeArray(1);
-	program->setAttributeBuffer(1, GL_FLOAT, 3 * sizeof(float), 2, 5 * sizeof(float));
-
 	vbo.release();
-	vao.release();
 }
 
 Mesh::~Mesh()
@@ -31,23 +21,20 @@ Mesh::~Mesh()
 	delete tex;
 
 	vbo.destroy();
-	vao.destroy();
 }
 
-void Mesh::draw()
+/*void Mesh::draw()
 {
 	tex->bind();
 	vao.bind();
 	glDrawArrays(GL_TRIANGLES, 0, numVertices);
 	vao.release();
 	tex->release();
-}
+}*/
 
-Model::Model(QOpenGLShaderProgram* program, QString directory, QString relativePath, QString filename)
+Model::Model(QString directory, QString relativePath, QString filename)
 {
 	this->filepath = directory + relativePath + filename;
-	qDebug("\nLoading model:");
-	qDebug(filepath.toStdString().c_str());
 
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
@@ -119,7 +106,7 @@ Model::Model(QOpenGLShaderProgram* program, QString directory, QString relativeP
 		QString texturefilepath = directory + relativePath + QString(texturePath.C_Str());
 		qDebug("Texture file path:");
 		qDebug(texturefilepath.toStdString().c_str());
-		m_meshs.push_back(new Mesh(program, texturefilepath, vertices.size(), &vertices[0], sizeof(Vertex) * vertices.size()));
+		m_meshs.push_back(new Mesh(texturefilepath, vertices.size(), &vertices[0], sizeof(Vertex) * vertices.size()));
 	}
 	
 	// We're done. Everything will be cleaned up by the importer destructor
@@ -128,18 +115,10 @@ Model::Model(QOpenGLShaderProgram* program, QString directory, QString relativeP
 
 Model::~Model()
 {
-	// Delete OpenGL stuff
-	for (Mesh* m : m_meshs)
+	// delete all previously created meshs
+	while (m_meshs.size() > 0)
 	{
-		delete m;
-	}
-	m_meshs.clear();
-}
-
-void Model::draw()
-{
-	for (Mesh* m : m_meshs)
-	{
-		m->draw();
+		delete m_meshs.back();
+		m_meshs.pop_back();
 	}
 }

@@ -56,7 +56,7 @@ void Editor::on_browseButton_clicked()
 	QString baseDirectory = QFileDialog::getExistingDirectory(this, QString("Choose Folder"), QDir::currentPath());
 
 	// check if the user didn't hit cancel
-	if (!baseDirectory.isNull())
+	if (!baseDirectory.isNull() && ui.lineEditModelDirectory->text().compare(baseDirectory) != 0)
 	{
 		// delete old models
 		ui.openGLWidget->setModel(nullptr);
@@ -67,15 +67,17 @@ void Editor::on_browseButton_clicked()
 			models.pop_back();
 		}
 
-		// save directory path in the line edit field
+		// clear list of previously loaded models
+		ui.listWidget->clear();
+		
+		// store new directory path in the line edit field
 		ui.lineEditModelDirectory->setText(baseDirectory);
 
-		// find and retrieve all models found within the previous selected directory
-		ui.listWidget->clear();
-		QDirIterator it(baseDirectory, QDir::Files, QDirIterator::Subdirectories);
-
+		//	use preview context for model loading
 		ui.openGLWidget->makeCurrent();
-		ui.openGLWidget->bindShader();
+
+		// find and retrieve all models found within the previous selected directory
+		QDirIterator it(baseDirectory, QDir::Files, QDirIterator::Subdirectories);
 		while (it.hasNext()) {
 			QString absolutefilePath = it.next();
 			QString relativeFilePath = absolutefilePath.replace(0, baseDirectory.length(), "");
@@ -88,13 +90,15 @@ void Editor::on_browseButton_clicked()
 				qDebug(relativeFilePath.toStdString().c_str());
 				qDebug(filename.toStdString().c_str());
 
-				Model* model = new Model(ui.openGLWidget->m_program, baseDirectory, relativeFilePath, filename);
+				Model* model = new Model(baseDirectory, relativeFilePath, filename);
 				models.push_back(model);
 
 				ui.listWidget->addItem(filename);
 			}
 		}
-		ui.openGLWidget->releaseShader();
+
+		// done loading models, so context can be unbound
+		ui.openGLWidget->doneCurrent();
 	}	
 }
 

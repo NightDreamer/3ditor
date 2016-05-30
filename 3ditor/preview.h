@@ -7,6 +7,7 @@
 #include <QOpenGLBuffer>
 #include <QWheelEvent>
 #include <QMatrix4x4>
+#include <vector>
 #include "model.h"
 
 class Preview : public QOpenGLWidget, protected QOpenGLFunctions
@@ -29,10 +30,10 @@ public:
 public slots:
 	void animate() { update(); };
 
-public:
-	QOpenGLShaderProgram* m_program;
-
 private:
+	std::vector<QOpenGLVertexArrayObject*> m_vaos;
+
+	QOpenGLShaderProgram* m_program = nullptr;
 	Model* previewModel = nullptr;
 
 	QMatrix4x4 m_projection;

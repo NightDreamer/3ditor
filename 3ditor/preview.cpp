@@ -36,6 +36,17 @@ Preview::Preview(QWidget* parent) : QOpenGLWidget(parent)
 
 Preview::~Preview()
 {
+	// erase model pointer
+	previewModel = nullptr;
+
+	// erase previous created VAOs
+	while (m_vaos.size() > 0)
+	{
+		m_vaos.back()->destroy();
+		delete m_vaos.back();
+		m_vaos.pop_back();
+	}
+
 	// destroy our shader object
 	delete m_program;
 }
@@ -84,7 +95,14 @@ void Preview::paintGL()
 		m_program->bind();
 		m_program->setUniformValue(m_program->uniformLocation("matrix"), m_projection * m_view * m_model);
 		{
-			previewModel->draw();
+			for (unsigned int i = 0; i < previewModel->getMeshs().size(); i++)
+			{
+				m_vaos[i]->bind();
+				previewModel->getMeshs()[i]->getTexture()->bind();
+				glDrawArrays(GL_TRIANGLES, 0, previewModel->getMeshs()[i]->getNumVertices());
+				previewModel->getMeshs()[i]->getTexture()->release();
+				m_vaos[i]->release();
+			}
 		}
 		m_program->release();
 	}
@@ -102,8 +120,20 @@ void Preview::wheelEvent(QWheelEvent* event)
 
 void Preview::setModel(Model* model)
 {
+	// bind context and shader
+	makeCurrent();
+	m_program->bind();
+
 	// store model
 	previewModel = model;
+
+	// erase previous created VAOs
+	while (m_vaos.size() > 0)
+	{
+		m_vaos.back()->destroy();
+		delete m_vaos.back();
+		m_vaos.pop_back();
+	}
 
 	// if model is valid
 	if (model)
@@ -112,7 +142,33 @@ void Preview::setModel(Model* model)
 		m_model.setToIdentity();
 		m_model.rotate(45.0f, QVector3D(0.0f, 1.0f, 0.0f));
 		m_model.scale(previewModel->getNormalisingValue());
+
+		// setup VAOs
+		for (unsigned int i = 0; i < model->getMeshs().size(); i++)
+		{
+			m_vaos.push_back(new QOpenGLVertexArrayObject());
+			m_vaos.back()->create();
+			if (m_vaos.back()->isCreated())
+			{
+				m_vaos.back()->bind();
+				model->getMeshs()[i]->getVertexBufferObject().bind();
+				m_program->enableAttributeArray(0);
+				m_program->setAttributeBuffer(0, GL_FLOAT, 0 * sizeof(float), 3, 5 * sizeof(float));
+				m_program->enableAttributeArray(1);
+				m_program->setAttributeBuffer(1, GL_FLOAT, 3 * sizeof(float), 2, 5 * sizeof(float));
+				model->getMeshs()[i]->getVertexBufferObject().release();
+				m_vaos.back()->release();
+			}
+			else
+			{
+				qDebug() << "Couldn't create VAO!\n";
+			}
+		}
 	}
+
+	// unbind shader and context
+	m_program->release();
+	doneCurrent();
 }
 
 void Preview::setAutoRotation(bool autoRotation)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QString>
-#include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
 #include <QOpenGLShaderProgram>
@@ -20,14 +19,15 @@ struct Vertex {
 class Mesh
 {
 public:
-	Mesh(QOpenGLShaderProgram* program, QString texturefilepath, GLuint numVertices, const void* data, int count);
+	Mesh(QString texturefilepath, GLuint numVertices, const void* data, int count);
 	~Mesh();
 
-	void draw();
+	GLuint getNumVertices() { return numVertices; };
+	QOpenGLBuffer& getVertexBufferObject() { return vbo; };
+	QOpenGLTexture* getTexture() { return tex; };
 
 private:
 	GLuint numVertices;
-	QOpenGLVertexArrayObject vao;
 	QOpenGLBuffer vbo;
 	QOpenGLTexture* tex;
 };
@@ -35,12 +35,11 @@ private:
 class Model
 {
 public:
-	Model(QOpenGLShaderProgram* program, QString directory, QString relativePath, QString filename);
+	Model(QString directory, QString relativePath, QString filename);
 	~Model();
 
-	void draw();
-
 	float getNormalisingValue() { return normalize; };
+	std::vector<Mesh*>& getMeshs() { return m_meshs; };
 
 public:
 	QString filepath;
